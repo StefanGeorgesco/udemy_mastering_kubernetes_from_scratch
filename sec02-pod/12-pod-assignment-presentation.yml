@@ -1,0 +1,10 @@
+# Please try to create this pod and analyze why it is failing. Please fix if possible.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-assignment
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: assignment
+      image: vinsdocker/k8s-pod-assignment

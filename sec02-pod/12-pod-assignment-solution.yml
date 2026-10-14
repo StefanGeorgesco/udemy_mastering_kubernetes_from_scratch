@@ -1,0 +1,24 @@
+# Please try to create this pod and analyze why it is failing. Please fix if possible.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-assignment
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: assignment
+      image: vinsdocker/k8s-pod-assignment
+      # Solution
+      # Create the pod with `kubectl create -f .\12-assignment.yml`,
+      # the type `kubectl logs pod-assignment` to see the error message:
+      # "
+      # You need to do the followings to make this work
+      #   1. Set an environment variable 'NUMBER' with the value 5
+      #   2. Pass the arg 'MY_ARG'
+      # "
+      # Now the pod should work correctly with this added:
+      env:
+        - name: NUMBER
+          value: "5"
+      args:
+        - "MY_ARG"
