@@ -1,3 +1,8 @@
+# create these pods with `kubectl create -f .\03-multiple-pods.yml`
+# and type `kubectl get pod` to see all the created pods
+# type `kubectl delete pod simple-pod-2` to delete the second pod
+# and type `kubectl get pod` to see the updated list of pods
+# Type `kubectl delete -f .\03-multiple-pods.yml` to delete all the pods
 apiVersion: v1
 kind: Pod
 metadata:

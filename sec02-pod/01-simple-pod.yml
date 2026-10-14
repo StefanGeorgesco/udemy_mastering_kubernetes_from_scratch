@@ -1,3 +1,7 @@
+# create this pod with `kubectl create -f .\01-simple-pod.yml`
+# and type `kubectl get pod` to see the created pod
+# Type `kubectl exec -it simple-pod -- sh` to start an interactive shell session inside the pod
+# Type `kubectl delete -f .\01-simple-pod.yml` to delete the pod
 apiVersion: v1
 kind: Pod
 metadata:

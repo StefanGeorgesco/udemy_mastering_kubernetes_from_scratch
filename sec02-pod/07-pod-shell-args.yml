@@ -1,3 +1,6 @@
+# create this pod with `kubectl create -f .\07-pod-shell-args.yml`
+# and type `kubectl logs simple-pod` to see the shell arguments in action
+# Type `kubectl delete -f .\07-pod-shell-args.yml` to delete the pod
 apiVersion: v1
 kind: Pod
 metadata:

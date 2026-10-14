@@ -1,3 +1,7 @@
+# create this pod with `kubectl create -f .\02-failing-pod.yml`
+# and type `kubectl get pod` several times to see the failing pod
+# being automatically restarted due to failure
+# Type `kubectl delete -f .\02-failing-pod.yml` to delete the pod
 apiVersion: v1
 kind: Pod
 metadata:

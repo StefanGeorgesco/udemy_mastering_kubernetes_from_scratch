@@ -1,3 +1,6 @@
+# create this pod with `kubectl create -f .\05-restart-policy.yml`
+# and observe the restart policy in action: the pod will not restart since it terminates successfully
+# Type `kubectl delete -f .\05-restart-policy.yml` to delete the pod
 apiVersion: v1
 kind: Pod
 metadata:

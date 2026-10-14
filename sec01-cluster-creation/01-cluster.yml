@@ -1,3 +1,5 @@
+# Type `kind create cluster --config .\sec01-cluster-creation\01-cluster.yml` to create the cluster
+# Type `kind delete cluster --name dev-cluster` to delete the cluster
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: dev-cluster

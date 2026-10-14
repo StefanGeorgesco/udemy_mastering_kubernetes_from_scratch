@@ -1,3 +1,6 @@
+# create this pod with `kubectl create -f .\04-pod-port.yml`
+# and type `kubectl port-forward simple-pod 80:80` to access the pod from the host at http://localhost
+# Type `kubectl delete -f .\04-pod-port.yml` to delete the pod
 apiVersion: v1
 kind: Pod
 metadata:

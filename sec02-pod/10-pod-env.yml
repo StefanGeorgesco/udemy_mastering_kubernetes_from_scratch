@@ -1,3 +1,6 @@
+# create this pod with `kubectl create -f .\10-pod-env.yml`
+# and type `kubectl logs simple-pod` to see the environment variables
+# Type `kubectl delete -f .\10-pod-env.yml` to delete the pod
 apiVersion: v1
 kind: Pod
 metadata:
