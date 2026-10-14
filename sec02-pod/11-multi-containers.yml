@@ -1,0 +1,18 @@
+# create this pod with `kubectl create -f .\11-multi-containers.yml`
+# then type `kubectl exec -it multi-containers-pod -c util -- bash` to start an interactive shell session inside the util container
+# then, inside the util container, you can access nginx with `curl http://localhost`!
+# Type `kubectl delete -f .\11-multi-containers.yml` to delete the pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-containers-pod
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: nginx
+      image: nginx:mainline-alpine3.24-slim
+    - name: util
+      image: vinsdocker/util
+      args:
+        - "sleep"
+        - "3600"
