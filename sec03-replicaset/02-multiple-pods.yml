@@ -1,0 +1,34 @@
+# create these pods with `kubectl create -f .\02-multiple-pods.yml`
+# Type `kubectl delete -f .\02-multiple-pods.yml` to delete all the pods
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod-1
+  labels:
+    team: team-a
+spec:
+  containers:
+    - name: nginx
+      image: nginx:mainline-alpine3.24-slim
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod-2
+  labels:
+    team: team-a
+spec:
+  containers:
+    - name: nginx
+      image: nginx:mainline-alpine3.24-slim
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod-3
+  labels:
+    team: team-a
+spec:
+  containers:
+    - name: nginx
+      image: nginx:mainline-alpine3.24-slim

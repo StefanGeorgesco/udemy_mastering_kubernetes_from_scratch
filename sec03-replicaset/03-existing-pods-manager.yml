@@ -1,0 +1,20 @@
+# create thepods with `kubectl create -f .\02-multiple-pods.yml`
+# create the replica set with `kubectl create -f .\03-existing-pods-manager.yml`
+# and see how the replica set manages the existing pods with `kubectl get all`
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: simple-rs
+spec:
+  selector:
+    matchLabels:
+      team: team-a
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        team: team-a
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:mainline-alpine3.24-slim
