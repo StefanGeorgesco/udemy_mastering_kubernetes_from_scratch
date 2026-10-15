@@ -1,0 +1,1 @@
+kind create cluster --config .\sec01-cluster-creation\01-cluster.yml
