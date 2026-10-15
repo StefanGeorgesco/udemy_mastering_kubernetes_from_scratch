@@ -1,0 +1,41 @@
+# create these replica sets with `kubectl create -f .\04-multiple-rs.yml`
+# and see the created replica set with `kubectl get all`
+# This is for pedagogical purposes only. We would not typically create multiple replica sets
+# for the same label in a real-world scenario (and replicasets are created via deployments, see next section)
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: simple-rs-1
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: simple-app
+        team: team-a
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:mainline-alpine3.24-slim
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: simple-rs-2
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: simple-app
+        team: team-a
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:mainline-alpine3.24-slim
