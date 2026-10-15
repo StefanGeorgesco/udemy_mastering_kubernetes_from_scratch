@@ -1,0 +1,20 @@
+# create the replica set with `kubectl create -f .\01-simple-rs.yml`
+# and see the created replica set with `kubectl get all`
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: simple-rs
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: simple-app
+        team: team-a
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:mainline-alpine3.24-slim
