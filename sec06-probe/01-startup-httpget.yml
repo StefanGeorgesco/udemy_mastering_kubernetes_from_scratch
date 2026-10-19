@@ -1,0 +1,23 @@
+# create this pod with `kubectl create -f .\01-startup-httpget.yml`
+# and type `kubectl get pod` to see the created pod
+# Type `kubectl delete -f .\01-startup-httpget.yml` to delete the pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod
+spec:
+  containers:
+    - name: nginx
+      image: nginx:mainline-alpine3.24-slim
+      startupProbe:
+        httpGet:
+          path: /
+          port: 80
+        periodSeconds: 1
+
+### Defaults ###
+# initialDelaySeconds 0
+# periodSeconds 10
+# timeoutSeconds 1
+# successThreshold 1
+# failureThreshold 3
