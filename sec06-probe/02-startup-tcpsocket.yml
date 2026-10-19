@@ -1,0 +1,23 @@
+# create this pod with `kubectl create -f .\02-startup-tcpsocket.yml`
+# and type `kubectl get pod` to see the created pod
+# Type `kubectl delete -f .\02-startup-tcpsocket.yml` to delete the pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod
+spec:
+  containers:
+    - name: mongo
+      image: mongo
+      startupProbe:
+        tcpSocket:
+          port: 27017
+        periodSeconds: 1
+        failureThreshold: 5
+
+### Defaults ###
+# initialDelaySeconds 0
+# periodSeconds 10
+# timeoutSeconds 1
+# successThreshold 1
+# failureThreshold 3
