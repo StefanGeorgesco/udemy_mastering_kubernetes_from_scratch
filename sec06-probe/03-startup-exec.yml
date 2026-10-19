@@ -1,0 +1,30 @@
+# create this pod with `kubectl create -f .\03-startup-exec.yml`
+# and type `kubectl get pod` to see the created pod
+# Type `kubectl delete -f .\03-startup-exec.yml` to delete the pod
+# Prefer httpGet or tcpSocket probes when possible
+# When using exec probes, create a separate health check script inside the image
+# e.g. in /bin/healthcheck
+# and reference it in the command section :
+# command:
+#   - /bin/healthcheck
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod
+spec:
+  containers:
+    - name: nginx
+      image: nginx:mainline-alpine3.24-slim
+      startupProbe:
+        exec:
+          command:
+            - cat
+            - /usr/share/nginx/html/index.html
+        periodSeconds: 1
+
+### Defaults ###
+# initialDelaySeconds 0
+# periodSeconds 10
+# timeoutSeconds 1
+# successThreshold 1
+# failureThreshold 3
