@@ -1,0 +1,58 @@
+# create this pod with `kubectl create -f ./sec06-probe/05-readiness-probe.yml`
+# and type `.\watch-describe-svc.ps1 readiness-probe-demo-service` to watch the service
+# The type `kubectl exec -it pod/readiness-probe-demo-pod -- bash` to get a shell inside the pod
+# type `cd /usr/share/nginx/html/` to navigate to the nginx html directory inside the pod
+# Then type `mv ready.html ready2.html` to simulate the readiness probe failing
+# And observe the endpoint becoming unavailable in the service
+# Then type `mv ready2.html ready.html` to restore the readiness probe
+# and observe the endpoint becoming available again in the service
+# Type `kubectl delete -f ./sec06-probe/05-readiness-probe.yml` to delete the pod
+# vinsdocker/k8s-probe-demo uses nginx
+# nginx will start after 10 seconds
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readiness-probe-demo-pod
+  labels:
+    app: readiness-probe-demo-app
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: readiness-probe-demo
+      image: vinsdocker/k8s-probe-demo
+      startupProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 10
+        periodSeconds: 1
+      livenessProbe:
+        httpGet:
+          path: /live.html
+          port: 80
+        periodSeconds: 1 # for demo purposes, should be higher in production (e.g., default of 10)
+      readinessProbe:
+        httpGet:
+          path: /ready.html
+          port: 80
+        periodSeconds: 1 # for demo purposes, should be higher in production (e.g., default of 10)
+        failureThreshold: 1
+
+
+### Defaults ###
+# initialDelaySeconds 0
+# periodSeconds 10
+# timeoutSeconds 1
+# successThreshold 1
+# failureThreshold 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: readiness-probe-demo-service
+spec:
+  selector:
+    app: readiness-probe-demo-app
+  ports:
+    - port: 80
+      targetPort: 80
