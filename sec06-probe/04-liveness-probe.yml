@@ -1,0 +1,33 @@
+# create this pod with `kubectl create -f .\04-liveness-probe.yml`
+# and type `kubectl get pod` to see the created pod
+# Type `kubectl delete -f .\04-liveness-probe.yml` to delete the pod
+# vinsdocker/k8s-probe-demo uses nginx
+# nginx will start after 10 seconds
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-demo-pod
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: liveness-probe-demo
+      image: vinsdocker/k8s-probe-demo
+      startupProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 10
+        periodSeconds: 1
+      livenessProbe:
+        httpGet:
+          path: /live.html
+          port: 80
+        periodSeconds: 1 # for demo purposes, should be higher in production (e.g., default of 10)
+
+
+### Defaults ###
+# initialDelaySeconds 0
+# periodSeconds 10
+# timeoutSeconds 1
+# successThreshold 1
+# failureThreshold 3
