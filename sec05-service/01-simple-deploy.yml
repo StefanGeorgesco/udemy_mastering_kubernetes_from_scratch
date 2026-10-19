@@ -1,5 +1,7 @@
 # create the deployment with `kubectl create -f .\01-simple-deploy.yml`
 # and see the created deployment with `kubectl get all`
+# To deploy to a specific namespace, first create the namespace with `kubectl create namespace <namespace-name>`,
+# and then deploy with `kubectl create -f .\01-simple-deploy.yml -n <namespace-name>`
 apiVersion: apps/v1
 kind: Deployment
 metadata:

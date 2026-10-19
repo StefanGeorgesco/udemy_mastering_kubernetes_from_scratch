@@ -1,0 +1,23 @@
+# create the namespace with `kubectl create namespace dev`
+# create the deployment with `kubectl create -f .\06-simple-deploy-namespace.yml`
+# and see the created deployment with `kubectl get all -n dev`
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-deploy
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: simple-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:mainline-alpine3.24-slim
+          ports:
+            - containerPort: 80
