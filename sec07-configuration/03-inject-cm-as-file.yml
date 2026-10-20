@@ -1,0 +1,33 @@
+# Create these resources with `kubectl apply -f sec07-configuration/03-inject-cm-as-file.yml`
+# Type `kubectl logs pod/simple-pod` to see the logs of the simple-pod container
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-properties
+data:
+  application.properties: |
+    appUrl=http://my-app-service
+    timeout=30
+    a.b.c.d=somevalue
+    user=stefan
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-pod
+spec:
+  terminationGracePeriodSeconds: 1
+  restartPolicy: Never
+  containers:
+    - name: ubuntu
+      image: ubuntu
+      volumeMounts:
+        - name: app-properties-volume
+          mountPath: /usr/share/properties
+      args:
+        - cat
+        - "/usr/share/properties/application.properties"
+  volumes:
+    - name: app-properties-volume
+      configMap:
+        name: app-properties
