@@ -1,0 +1,29 @@
+# create the deployment with `kubectl apply -f .\01-deploy-cpu-memory-usage.yml`
+# and see the created deployment with `kubectl get all`
+# Type `kubectl top pods` to see the CPU and memory usage of the pods
+# Try with 30 replicas, and see the details of pending pods with `kubectl describe pod <pod-name>`.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-deploy
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: simple-app
+        team: team-a
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:mainline-alpine3.24-slim
+          resources:
+            requests:
+              cpu: 2
+              memory: 100Mi
+            limits:
+              cpu: 2
+              memory: 100Mi
