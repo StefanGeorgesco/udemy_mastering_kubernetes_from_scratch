@@ -1,0 +1,68 @@
+# create the deployment with `kubectl apply -f .\02-deploy-for-hpa.yml`
+# create the hpa with `kubectl apply -f .\03-hpa.yml`
+# check the status with `kubectl get all` (with watch or in a loop, e.g., `watch kubectl get all` in Linux)
+# get into the demo pod with `kubectl exec -it pod/demo-pod -- bash`
+# and submit nginx service to a load test, e.g., with `ab -n 500000 -c 10 http://nginx-service/`
+# and observe the HPA scaling behavior with the `kubectl get all` loop : new pods get created as the load increases
+# and then removed as the load decreases at the end of the test
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-deploy
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: simple-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:mainline-alpine3.24-slim
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 1
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 5 # for demo purposes, should be higher in production (e.g., default of 10)
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 25Mi
+            limits:
+              cpu: 200m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: simple-app
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: demo
+      image: vinsdocker/util
+      args:
+        - sleep
+        - "3600"
