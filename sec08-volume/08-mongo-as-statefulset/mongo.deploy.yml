@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-deploy
+spec:
+  serviceName: mongo-service # Headless service for StatefulSet
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:4.4-focal
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - secretRef:
+                name: mongo-secret
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /docker-entrypoint-initdb.d
+            - name: mongo-storage
+              mountPath: /data/db
+      volumes:
+        - name: mongo-data
+          configMap:
+            name: mongo-data
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  clusterIP: None # Headless service
+  selector:
+    app: mongo
+  ports:
+    - port: 27017
+      targetPort: 27017
