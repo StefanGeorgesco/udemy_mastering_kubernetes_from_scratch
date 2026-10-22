@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-deployment
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: simple-app
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: nginx
+          image: vinsdocker/nginx-gke
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-app
+spec:
+  selector:
+    app: simple-app
+  ports:
+    - port: 80
+      targetPort: 80
