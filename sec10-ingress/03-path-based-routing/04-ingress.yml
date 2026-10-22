@@ -1,0 +1,34 @@
+# create with `kubectl apply -f sec10-ingress/02-simple-ingress.yml`
+# list ingresses with `kubectl get ingress` or `kubectl get ing`
+# describe an ingress with `kubectl describe ingress simple-ingress`
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          # Kubernertes uses best match first logic,
+          # so more specific paths are selected before less specific ones
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: home-service
+                port:
+                  number: 80
+          - path: /product
+            pathType: Prefix
+            backend:
+              service:
+                name: product-service
+                port:
+                  number: 80
+          - path: /user
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 80
