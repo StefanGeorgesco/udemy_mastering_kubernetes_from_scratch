@@ -84,8 +84,9 @@ http://localhost/api/candidate/all
 - Both Job and Candidates services are expected to auto scale based on CPU utilization
   ```
   Avg CPU Utilization : 30%
-  Max Replicas: 2
-  Scale Down Behavior Window: 300 seconds
+  Min Replicas: 2
+  Max Replicas: 3
+  Scale Down Behavior Window: 10 seconds (for demo)
   ```
 
 ## Routing Rules

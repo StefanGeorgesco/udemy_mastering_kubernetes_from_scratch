@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: candidate-service-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: candidate-service
+  template:
+    metadata:
+      labels:
+        app: candidate-service
+    spec:
+      containers:
+        - name: candidate-service
+          image: stefangeorgesco/candidate-service:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: job.service.url
+              value: http://job-service:8080/job/
+          envFrom:
+            - secretRef:
+                name: candidate-service-secret
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 1
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 2000m
+              memory: 2000Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: candidate-service
+spec:
+  selector:
+    app: candidate-service
+  ports:
+    - port: 8080
+      targetPort: 8080

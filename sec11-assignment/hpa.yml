@@ -1,0 +1,43 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: job-service-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: job-service-deploy
+  minReplicas: 2 # For demo purpose, a production environment would use at least 2 min replicas
+  maxReplicas: 3 # For demo purpose, a production environment would use a higher value (e.g., 10)
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 30 # For demo purpose, a production environment would use a higher value (e.g., 50)
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 10 # For demo purpose, a production environment would use a higher value (e.g., 300)
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: candidate-service-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: candidate-service-deploy
+  minReplicas: 2 # For demo purpose, a production environment would use at least 2 min replicas
+  maxReplicas: 3 # For demo purpose, a production environment would use a higher value (e.g., 10)
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 30 # For demo purpose, a production environment would use a higher value (e.g., 50)
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 10 # For demo purpose, a production environment would use a higher value (e.g., 300)

@@ -1,0 +1,16 @@
+# get into the demo pod with `kubectl exec -it pod/test-pod -- bash`
+# and submit nginx service to a load test, e.g., with `ab -n 500000 -c 20 http://candidate-service:8080/1`
+# and observe the HPA scaling behavior with the `kubectl get all` loop : new pods get created as the load increases
+# and then removed as the load decreases at the end of the test
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: test
+      image: vinsdocker/util
+      args:
+        - sleep
+        - "3600"
